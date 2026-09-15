@@ -1,15 +1,15 @@
 = Blue/Green
 
-https://martinfowler.com/bliki/BlueGreenDeployment.html[Here] you can find a description and history of Blue/Green Deployment.
+Blue/Green 배포에 대한 설명과 역사는 https://martinfowler.com/bliki/BlueGreenDeployment.html[여기]에서 확인할 수 있습니다.
 
-Make sure you are in the correct namespace
+올바른 네임스페이스에 있는지 확인합니다.
 
 :section-k8s: bluegreen
 :set-namespace: myspace
 
 include::partial$set-context.adoc[]
 
-Make sure nothing else is deployed:
+다른 것이 배포되어 있지 않은지 확인합니다:
 
 [#no-resources-blue-green]
 [.console-input]
@@ -24,7 +24,7 @@ kubectl get all
 No resources found in myspace namespace.
 ----
 
-Deploy V1 of `myboot`:
+``myboot``의 V1을 배포합니다:
 
 [#deploy-v1-blue-green]
 [.console-input]
@@ -33,7 +33,7 @@ Deploy V1 of `myboot`:
 kubectl apply -f apps/kubefiles/myboot-deployment-resources-limits.yml
 ----
 
-Scale to 2 replicas:
+복제본을 2개로 스케일합니다:
 
 [#scale-v1-blue-green]
 [.console-input]
@@ -42,7 +42,7 @@ Scale to 2 replicas:
 kubectl scale deployment/myboot --replicas=2
 ----
 
-Watch and `show-labels`:
+지켜보면서 ``show-labels``를 사용합니다:
 
 [#labels-v1-blue-green]
 [.console-input]
@@ -51,7 +51,7 @@ Watch and `show-labels`:
 kubectl get pods -w --show-labels
 ----
 
-Deploy the service:
+Service를 배포합니다:
 
 [#deploy-service-blue-green]
 [.console-input]
@@ -64,11 +64,11 @@ kubectl apply -f apps/kubefiles/myboot-service.yml
 :service-exposed: myboot
 include::partial$env-curl.adoc[]
 
-And run loop script:
+그리고 loop 스크립트를 실행합니다:
 
 include::partial$loop.adoc[]
 
-Deploy V2 of `myboot`:
+``myboot``의 V2를 배포합니다:
 
 [#deploy-v2-blue-green]
 [.console-input]
@@ -77,7 +77,7 @@ Deploy V2 of `myboot`:
 kubectl apply -f apps/kubefiles/myboot-deployment-resources-limits-v2.yml
 ----
 
-Verify that the new pod/deployment carries the new code:
+새 pod/deployment가 새 코드를 가지고 있는지 확인합니다:
 
 [#exec-v2-blue-green]
 [.console-input]
@@ -93,7 +93,7 @@ kubectl exec -it $PODNAME -- curl localhost:8080
 Jambo from Spring Boot! 1 on myboot-next-66b68c6659-ftcjr
 ----
 
-Now update the single Service to point to the new pod and go GREEN:
+이제 단일 Service가 새 pod를 가리키도록 업데이트해서 GREEN으로 전환합니다:
 
 [#patch-service-green]
 [.console-input]
@@ -111,9 +111,9 @@ Jambo from Spring Boot! 3 on myboot-next-66b68c6659-ftcjr
 Jambo from Spring Boot! 4 on myboot-next-66b68c6659-ftcjr
 ----
 
-Determine that you prefer Hawaiian (blue) to French (green) and fallback:
+프랑스식(green)보다 하와이식(blue)을 더 선호한다고 판단하여 되돌립니다:
 
-Now update the single Service to point to the new pod and go BLUE:
+이제 단일 Service가 새 pod를 가리키도록 업데이트해서 BLUE로 전환합니다:
 
 [#patch-service-blue]
 [.console-input]
@@ -130,7 +130,7 @@ Aloha from Spring Boot! 257 on myboot-d78fb6d58-vqvlb
 Aloha from Spring Boot! 258 on myboot-d78fb6d58-vqvlb
 ----
 
-== Clean Up
+== 정리
 
 [#clean]
 [.console-input]

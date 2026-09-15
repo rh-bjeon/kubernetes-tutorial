@@ -1,8 +1,8 @@
-= Kubectl exec
+= kubectl exec
 
-The exec command allows you to "shell into" your pod and execute commands inside of that tiny linux machine that is running your application. 
+exec 명령을 사용하면 pod 안으로 "셸 접속"해서, 애플리케이션이 실행되고 있는 작은 리눅스 머신 안에서 직접 명령을 실행할 수 있습니다.
 
-You can execute it this way:
+다음과 같이 실행할 수 있습니다:
 
 [.console-input]
 [source,bash]
@@ -10,7 +10,7 @@ You can execute it this way:
 kubectl exec -it {podname} -- /bin/bash
 ----
 
-Or this way:
+또는 다음과 같이도 실행할 수 있습니다:
 
 [.console-input]
 [source,bash]
@@ -18,9 +18,9 @@ Or this way:
 kubectl exec {podname} -- /somecommand
 ----
 
-In this section, we will be debugging an OOMKilled that is often seen when running Java inside of a container, inside of Kubernetes.
+이 섹션에서는 쿠버네티스 컨테이너 안에서 Java를 실행할 때 흔히 볼 수 있는 OOMKilled 문제를 디버깅해 보겠습니다.
 
-Make sure the Spring Boot pod from the Resources chapter is still running:
+Resources 장에서 사용한 Spring Boot pod가 여전히 실행 중인지 확인합니다:
 
 [#get-pods-exec]
 [.console-input]
@@ -36,7 +36,7 @@ NAME                     READY   STATUS    RESTARTS   AGE
 myboot-d78fb6d58-69kl7   1/1     Running   2          32m
 ----
 
-Then let's move inside the container by running `exec` into that running Pod:
+그런 다음 실행 중인 Pod에 ``exec``를 실행해서 컨테이너 안으로 들어가 봅시다:
 
 [#exec-pod-exec]
 [.console-input]
@@ -46,7 +46,7 @@ PODNAME=$(kubectl get pod  -l app=myboot -o name)
 kubectl exec -it $PODNAME -- /bin/bash
 ----
 
-Run `ps` command to see the current running processes:
+`ps` 명령을 실행해서 현재 실행 중인 프로세스를 확인합니다:
 
 [#exec-ps-exec]
 [.console-input]
@@ -65,7 +65,7 @@ UID          PID    PPID  C STIME TTY          TIME CMD
 1000610+      49      43  0 19:29 pts/0    00:00:00 ps -ef
 ----
 
-Execute a `top` to get an overview of the memory:
+``top``을 실행해서 메모리 현황을 확인합니다:
 
 [#exec-top-exec]
 [.console-input]
@@ -92,7 +92,7 @@ KiB Swap:        0 total,        0 free,        0 used. 13142476 avail Mem
      50 1000610+  20   0   42672   3516   3080 R   0.0  0.0   0:00.00 top
 ----
 
-Get the distro:
+배포판 정보를 확인합니다:
 
 [#exec-cat-release-exec]
 [.console-input]
@@ -114,7 +114,7 @@ SUPPORT_URL="https://www.debian.org/support"
 BUG_REPORT_URL="https://bugs.debian.org/"
 ----
 
-Check the free memory:
+여유 메모리를 확인합니다:
 
 [#exec-free-exec]
 [.console-input]
@@ -131,9 +131,9 @@ Mem:            14G        2.2G        6.1G         17M        6.4G         12G
 Swap:            0B          0B          0B
 ----
 
-And now you might see part of the problem. "free" is not `cgroups` aware, it thinks it has access to the whole VMs memory.
+이제 문제의 일부가 보일 것입니다. "free"는 ``cgroups``를 인식하지 못해서, VM 전체 메모리에 접근할 수 있다고 생각합니다.
 
-No wonder the JVM reports a larger than accurate Max memory:
+JVM이 실제보다 더 큰 Max 메모리를 보고하는 것도 당연합니다:
 
 [#curl-sysresources-exec]
 [.console-input]
@@ -150,16 +150,16 @@ Memory: 1324 Cores: 4
 
 [NOTE]
 ==== 
-If using Minikube, the cores are the core count provided by
+Minikube를 사용하는 경우, 코어 수는 다음 명령으로 지정한 코어 수입니다.
 
 `minikube --profile devnation config set cpus 4`
 
-and the memory is a subset of the memory provided by
+그리고 메모리는 다음 명령으로 지정한 메모리의 일부입니다.
 
 `minikube --profile devnation config set memory 6144`
 ====
 
-Check your Java version:
+Java 버전을 확인합니다:
 
 [#java-version-181-exec]
 [.console-input]
@@ -176,7 +176,7 @@ OpenJDK Runtime Environment (build 1.8.0_181-8u181-b13-2~deb9u1-b13)
 OpenJDK 64-Bit Server VM (build 25.181-b13, mixed mode)
 ----
 
-Ask the JVM about its resource availability:
+JVM에 사용 가능한 리소스를 물어봅니다:
 
 [#java-version-181-settings-exec]
 [.console-input]
@@ -198,7 +198,7 @@ OpenJDK Runtime Environment (build 1.8.0_181-8u181-b13-2~deb9u1-b13)
 OpenJDK 64-Bit Server VM (build 25.181-b13, mixed mode)
 ----
 
-Now check the actual `cgroups` settings:
+이제 실제 `cgroups` 설정을 확인합니다:
 
 [#cat-cgroup-exec]
 [.console-input]
@@ -214,9 +214,9 @@ cat memory.limit_in_bytes
 419430400
 ----
 
-And if you divide that 419430400 by 1024 and 1024, you end up with the 400 that was specified in the deployment YAML.
+419430400을 1024와 1024로 나누면 deployment YAML에 지정했던 400이 나옵니다.
 
-If you have a JVM of 1.8.0_131 or higher then you can try the experimental options
+JVM 버전이 1.8.0_131 이상이라면 실험적 옵션을 시도해 볼 수 있습니다.
 
 [#java-version-131-settings-exec]
 [.console-input]
@@ -238,7 +238,7 @@ OpenJDK Runtime Environment (build 1.8.0_181-8u181-b13-2~deb9u1-b13)
 OpenJDK 64-Bit Server VM (build 25.181-b13, mixed mode)
 ----
 
-To leave this pod, simply type `exit` and hit enter:
+이 pod에서 나가려면 ``exit``을 입력하고 엔터를 누르기만 하면 됩니다:
 
 [.console-input]
 [source, bash]
@@ -246,7 +246,7 @@ To leave this pod, simply type `exit` and hit enter:
 exit
 ----
 
-== Clean Up
+== 정리
 
 [.console-input]
 [source,bash]

@@ -12,9 +12,9 @@ NAME    TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 myapp   LoadBalancer   172.30.103.41   <pending>     8080:31974/TCP   4s
 ----
 
-Wait until you see an external IP assigned.
+외부 IP가 할당될 때까지 기다립니다.
 
-NOTE: On Minikube without an Ingress controller, <pending> will not become a real external IP.  https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/[Optional: Setup Minikube Ingress]
+NOTE: Ingress 컨트롤러가 없는 Minikube에서는 <pending>이 실제 외부 IP로 바뀌지 않습니다. https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/[선택 사항: Minikube Ingress 설정하기]
 
 [.console-output]
 [source,bash,subs="+macros,+attributes"]

@@ -1,7 +1,7 @@
-= Kubernetes Tutorial
+= 쿠버네티스 튜토리얼
 
-Welcome to your Kubernetes Journey!
+쿠버네티스 여정에 오신 것을 환영합니다!
 
-Your journey contains four steps, each one of them in a different section:
+이 여정은 각각 다른 섹션으로 구성된 네 단계로 이루어져 있습니다:
 
 include::../nav.adoc[]

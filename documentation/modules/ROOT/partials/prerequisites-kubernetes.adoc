@@ -4,17 +4,17 @@
 :java-version: 21
 :stern-version: 1.33.0
 
-The following CLI tools are required for running the exercises in this tutorial. 
-Please have them installed and configured before you get started with any of the tutorial chapters.
+이 튜토리얼의 실습을 진행하려면 다음 CLI 도구들이 필요합니다.
+튜토리얼의 어느 장을 시작하기 전이든 먼저 이 도구들을 설치하고 설정해 두세요.
 
 [cols="4*^,4*.",options="header,+attributes"]
 |===
-|**Tool**|**macOS**|**Fedora**|**windows**
+|**도구**|**macOS**|**Fedora**|**windows**
 
 | `Git`
-| https://git-scm.com/download/mac[Download]
-| https://git-scm.com/download/linux[Download]
-| https://git-scm.com/download/win[Download]
+| https://git-scm.com/download/mac[다운로드]
+| https://git-scm.com/download/linux[다운로드]
+| https://git-scm.com/download/win[다운로드]
 
 | `Docker`
 | https://docs.docker.com/docker-for-mac/install[Docker for Mac]
@@ -22,29 +22,29 @@ Please have them installed and configured before you get started with any of the
 | https://docs.docker.com/docker-for-windows/install[Docker for Windows]
 
 | `VirtualBox`
-| https://download.virtualbox.org/virtualbox/7.2.2/VirtualBox-7.2.2-170484-OSX.dmg[Download]
-| No need for VirtualBox on Linux since you can rely on embedded kernel virtualization
-| https://download.virtualbox.org/virtualbox/7.2.2/VirtualBox-7.2.2-170484-Win.exe[Download]
+| https://download.virtualbox.org/virtualbox/7.2.2/VirtualBox-7.2.2-170484-OSX.dmg[다운로드]
+| Linux는 내장된 커널 가상화를 사용할 수 있으므로 VirtualBox가 필요하지 않습니다.
+| https://download.virtualbox.org/virtualbox/7.2.2/VirtualBox-7.2.2-170484-Win.exe[다운로드]
 
 | `https://kubernetes.io/docs/tasks/tools/install-minikube[Minikube] {minikube-version}`
-| https://github.com/kubernetes/minikube/releases/download/{minikube-version}/minikube-darwin-amd64[Download]
-| https://github.com/kubernetes/minikube/releases/download/{minikube-version}/minikube-linux-amd64[Download]
-| https://github.com/kubernetes/minikube/releases/download/{minikube-version}/minikube-windows-amd64.exe[Download]
+| https://github.com/kubernetes/minikube/releases/download/{minikube-version}/minikube-darwin-amd64[다운로드]
+| https://github.com/kubernetes/minikube/releases/download/{minikube-version}/minikube-linux-amd64[다운로드]
+| https://github.com/kubernetes/minikube/releases/download/{minikube-version}/minikube-windows-amd64.exe[다운로드]
 
 | `kubectl {kubernetes-version}`
-| https://storage.googleapis.com/kubernetes-release/release/{kubernetes-version}/bin/darwin/amd64/kubectl[Download]
-| https://storage.googleapis.com/kubernetes-release/release/{kubernetes-version}/bin/linux/amd64/kubectl[Download]
-| https://storage.googleapis.com/kubernetes-release/release/{kubernetes-version}/bin/windows/amd64/kubectl.exe[Download]
+| https://storage.googleapis.com/kubernetes-release/release/{kubernetes-version}/bin/darwin/amd64/kubectl[다운로드]
+| https://storage.googleapis.com/kubernetes-release/release/{kubernetes-version}/bin/linux/amd64/kubectl[다운로드]
+| https://storage.googleapis.com/kubernetes-release/release/{kubernetes-version}/bin/windows/amd64/kubectl.exe[다운로드]
 
 
 | `Apache Maven {maven-version}`
-| https://archive.apache.org/dist/maven/maven-3/{maven-version}/binaries/apache-maven-{maven-version}-bin.tar.gz[Download]
-| https://archive.apache.org/dist/maven/maven-3/{maven-version}/binaries/apache-maven-{maven-version}-bin.tar.gz[Download]
-| https://archive.apache.org/dist/maven/maven-3/{maven-version}/binaries/apache-maven-{maven-version}-bin.tar.gz[Download]
+| https://archive.apache.org/dist/maven/maven-3/{maven-version}/binaries/apache-maven-{maven-version}-bin.tar.gz[다운로드]
+| https://archive.apache.org/dist/maven/maven-3/{maven-version}/binaries/apache-maven-{maven-version}-bin.tar.gz[다운로드]
+| https://archive.apache.org/dist/maven/maven-3/{maven-version}/binaries/apache-maven-{maven-version}-bin.tar.gz[다운로드]
 
 | `Java {java-version}`
 | https://adoptium.net/installation/
-| https://adoptium.net/installation/ alternatively: 
+| https://adoptium.net/installation/ 또는:
 
 `dnf install java-{java-version}-openjdk-devel`
-| https://adoptium.net/installation/ (Make sure you set the `JAVA_HOME` environment variable and add `%JAVA_HOME%\bin` to your `PATH`)
+| https://adoptium.net/installation/ (`JAVA_HOME` 환경 변수를 설정하고 ``%JAVA_HOME%\bin``을 ``PATH``에 추가했는지 확인하세요.)

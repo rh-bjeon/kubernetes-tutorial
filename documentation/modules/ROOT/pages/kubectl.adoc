@@ -1,7 +1,7 @@
-= kubectl: The Kubernetes Client
+= kubectl: 쿠버네티스 클라이언트
 
 [[talk]]
-== Talk to your Cluster
+== 클러스터와 대화하기
 [#kubectl-view-config]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -12,7 +12,7 @@ kubectl config view
 
 
 [[view-nodes]]
-== View Nodes
+== 노드 확인하기
 
 [#kubectl-get-nodes]
 [.console-input]
@@ -24,9 +24,9 @@ kubectl get namespaces
 ----
 
 [[view-pods]]
-== View out-of-the-box Pods
+== 기본 제공 Pod 확인하기
 
-Your Kubernetes vendor likely includes many pods out-of-the-box:
+사용 중인 쿠버네티스 배포판에는 기본으로 포함된 Pod들이 여럿 있을 것입니다:
 
 [#kubectl-get-pods]
 [.console-input]
@@ -38,9 +38,9 @@ kubectl get pods --all-namespaces -o wide
 ----
 
 [[deploy-app]]
-== Deploy Something
+== 무언가 배포하기
 
-Create a Namespace and Deploy something:
+네임스페이스를 만들고 무언가를 배포합니다:
 
 [#kubectl-deploy-app]
 [.console-input]
@@ -53,7 +53,7 @@ kubectl create deployment myapp --image=quay.io/rhdevelopers/quarkus-demo:v1
 ----
 
 [[monitor-events]]
-== While monitoring Events
+== 이벤트 모니터링하기
 
 [#kubectl-get-events]
 [.console-input]
@@ -78,9 +78,9 @@ o:1.0.0"
 ----
 
 [[created-objects]]
-== Created Objects
+== 생성된 객체
 
-=== Deployments
+=== Deployment
 [#kubectl-get-deployments]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -95,7 +95,7 @@ NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 myapp   1/1     1            1           95s
 ----
 
-=== Replicasets
+=== ReplicaSet
 [#kubectl-get-replicasets]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -110,7 +110,7 @@ NAME               DESIRED   CURRENT   READY   AGE
 myapp-5dcbf46dfc   1         1         1       2m1s
 ----
 
-=== Pods
+=== Pod
 
 [#kubectl-get-podsx]
 [.console-input]
@@ -126,7 +126,7 @@ NAME                     READY   STATUS    RESTARTS   AGE     LABELS
 myapp-5dcbf46dfc-ghrk4   1/1     Running   0          2m18s   app=myapp,pod-template-hash=5dcbf46dfc
 ----
 
-=== Logs
+=== 로그
 [#kubectl-logs]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -141,7 +141,7 @@ kubectl logs -l app=myapp
 2020-03-22 14:41:30,497 INFO  [io.quarkus] (main) Installed features: [cdi, resteasy]
 ----
 
-== Expose a Service
+== Service 노출하기
 [#kubectl-expose]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -149,22 +149,22 @@ kubectl logs -l app=myapp
 kubectl expose deployment myapp --port=8080 --type=LoadBalancer
 ----
 
-=== while watching Services
+=== Service를 지켜보면서
 
 :section-k8s: kubectl
 include::partial$watching-services.adoc[]
 
-== Talk to the App
+== 앱과 대화하기
 
 :section-k8s: kubectl
 :service-exposed: myapp
 include::partial$env-curl.adoc[]
 
-== Scale the App
+== 앱 스케일하기
 
-Open three Terminal Windows.
+터미널 창을 세 개 엽니다.
 
-=== Terminal 1
+=== 터미널 1
 [#watch-pods]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -172,13 +172,13 @@ Open three Terminal Windows.
 kubectl get pods -w
 ----
 
-=== Terminal 2
+=== 터미널 2
 
 :service-exposed: myapp
 
 include::partial$env-curl.adoc[]
 
-Poll the endpoint:
+엔드포인트를 폴링합니다:
 
 [#poll-endpoint]
 [.console-input]
@@ -190,7 +190,7 @@ sleep {curl-loop-sleep-time}
 done
 ----
 
-Results of the polling:
+폴링 결과:
 
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
@@ -202,9 +202,9 @@ Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-ghrk4:292
 Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-ghrk4:293
 ----
 
-=== Terminal 3
+=== 터미널 3
 
-Change replicas:
+복제본 수를 변경합니다:
 
 [#change-replicas]
 [.console-input]
@@ -222,7 +222,7 @@ myapp-5dcbf46dfc-ghrk4   1/1     Running             0          5m32s
 myapp-5dcbf46dfc-z6hqw   0/1     ContainerCreating   0          4s
 ----
 
-Start a rolling update by changing the image:
+이미지를 변경해서 롤링 업데이트를 시작합니다:
 
 [#set-image-myboot-v1]
 [.console-input]
@@ -243,7 +243,7 @@ Supersonic Subatomic Java with Quarkus myapp-5dcbf46dfc-z6hqw:170
 Aloha from Spring Boot! 2 on myapp-58b97dbd95-vxd87
 ----
 
-Annotate the change cause for the records (documentation purpose):
+기록(문서화 목적)을 위해 변경 사유를 주석으로 남깁니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -251,7 +251,7 @@ Annotate the change cause for the records (documentation purpose):
 kubectl annotate deployment/myapp kubernetes.io/change-cause="Reverting to old SpringBoot version" --overwrite
 ----
 
-Explore the revision history:
+리비전 히스토리를 살펴봅니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -268,7 +268,7 @@ REVISION  CHANGE-CAUSE
 2         Restoring to old SpringBoot version
 ----
 
-List the ReplicaSets for the deployment:
+deployment의 ReplicaSet 목록을 조회합니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -284,7 +284,7 @@ myapp-65c9d96df4   3         3         3       2m
 myapp-67fc4b6f94   0         0         0       8m
 ----
 
-Revert to the most recent successful version (e.g., from Revision 2 back to Revision 1), use the undo command:
+가장 최근에 성공했던 버전으로 되돌리려면(예: 리비전 2에서 리비전 1로), undo 명령을 사용합니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -294,7 +294,7 @@ kubectl rollout undo deployment/myapp
 
 [TIP]
 ====
-You can specify the revision number adding the following option: `--to-revision=1`
+다음 옵션을 추가하면 리비전 번호를 지정할 수 있습니다: `--to-revision=1`
 ====
 
 [.console-output]
@@ -310,7 +310,7 @@ Aloha from Spring Boot! 19 on myapp-fc6b78bb-d495j
 Supersonic Subatomic Java with Quarkus myapp-76d84b5f46-jlzs7:4
 ----
 
-=== Clean Up
+=== 정리
 [#delete-namespace]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]

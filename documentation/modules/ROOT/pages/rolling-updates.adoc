@@ -1,6 +1,6 @@
-= Rolling updates
+= 롤링 업데이트
 
-Make sure you are in the correct namespace
+올바른 네임스페이스에 있는지 확인합니다.
 
 :section-k8s: rolling
 :set-namespace: myspace
@@ -8,10 +8,10 @@ include::partial$set-context.adoc[]
 
 [TIP,subs="attributes+,+macros"]
 ====
-If you just came from xref::resources.adoc[the Resources and Limits section, window=_blank] then you should already have the pods and deployments active that you need.  If not, you will need run the following commands to deploy the needed elements into {set-namespace}
+방금 xref::resources.adoc[리소스와 제한 섹션, window=_blank]에서 넘어왔다면 필요한 pod와 deployment가 이미 실행 중일 것입니다. 그렇지 않다면 {set-namespace}에 필요한 요소들을 배포하기 위해 다음 명령을 실행해야 합니다.
 ====
 
-Deploy the Spring Boot app if needed:
+필요하다면 Spring Boot 앱을 배포합니다:
 
 [#deploy-myboot-rolling]
 [.console-input]
@@ -21,24 +21,24 @@ kubectl apply -f apps/kubefiles/myboot-deployment-resources-limits.yml
 kubectl apply -f apps/kubefiles/myboot-service.yml
 ----
 
-*Terminal 1*: watch the Pods.
+**터미널 1**: Pod를 지켜봅니다.
 
 include::partial$watching-pods.adoc[]
 
-*Terminal 2*: curl loop the service.
+**터미널 2**: service에 반복해서 curl 요청을 보냅니다.
 
 :service-exposed: myboot
 
 include::partial$env-curl.adoc[]
 
-And run loop script:
+그리고 loop 스크립트를 실행합니다:
 
 include::partial$loop.adoc[]
 
 
-*Terminal 3* : Run commands.
+**터미널 3**: 명령을 실행합니다.
 
-Describe (or `kubectl edit`) the Deployment:
+Deployment를 describe(또는 `kubectl edit`)합니다:
 
 :describe-deployment-name: myboot
 :section-k8s: rolling-init
@@ -62,9 +62,9 @@ RollingUpdateStrategy:  25% max unavailable, 25% max surge
 .
 ----
 
-`StrategyType` options include `RollingUpdate` and `Recreate`:
+`StrategyType` 옵션에는 ``RollingUpdate``와 ``Recreate``가 있습니다:
 
-Change the replicas:
+복제본 수를 변경합니다:
 
 include::partial$tip_vscode_kube_editor.adoc[]
 
@@ -75,7 +75,7 @@ include::partial$tip_vscode_kube_editor.adoc[]
 kubectl edit deployment myboot
 ----
 
-Look for "replicas":
+"replicas"를 찾습니다:
 
 [.console-output]
 [source,yaml]
@@ -89,7 +89,7 @@ spec:
       app: myboot
 ----
 
-And update to "2":
+그리고 "2"로 변경합니다:
 
 [.console-output]
 [source, yaml]
@@ -103,7 +103,7 @@ spec:
       app: myboot
 ----
 
-Save and close your editor and a new pod will come to life:
+편집기를 저장하고 닫으면 새로운 pod가 생겨납니다:
 
 [#edit-deployment-replicas-get-pod-rolling]
 [.console-input]
@@ -120,7 +120,7 @@ myboot-d78fb6d58-2fqml   1/1     Running   0          25s
 myboot-d78fb6d58-ljkjp   1/1     Running   0          3m
 ----
 
-Change the image associated with the deployment:
+deployment에 연결된 이미지를 변경합니다:
 
 [#edit-deployment-v2-rolling]
 [.console-input]
@@ -129,7 +129,7 @@ Change the image associated with the deployment:
 kubectl edit deployment myboot
 ----
 
-Find the image attribute:
+image 속성을 찾습니다:
 
 [source, yaml]
 ----
@@ -140,7 +140,7 @@ Find the image attribute:
         name: myboot
 ----
 
-and change the image `myboot:v2`:
+그리고 이미지를 ``myboot:v2``로 변경합니다:
 
 [source, yaml]
 ----
@@ -168,7 +168,7 @@ myboot-d78fb6d58-2fqml    1/1     Running             0          3m29s
 myboot-d78fb6d58-ljkjp    1/1     Terminating         0          8m
 ----
 
-And the output from terminal 2:
+그리고 터미널 2의 출력:
 
 [.console-output]
 [source,bash]
@@ -179,7 +179,7 @@ Bonjour from Spring Boot! 0 on myboot-7fbc4b97df-4ntmk
 Bonjour from Spring Boot! 1 on myboot-7fbc4b97df-4ntmk
 ----
 
-Check the status of the deployment:
+deployment의 상태를 확인합니다:
 
 [#rollout-v2-rolling]
 [.console-input]
@@ -194,7 +194,7 @@ kubectl rollout status deployment myboot
 deployment "myboot" successfully rolled out
 ----
 
-Notice that there is a new RS:
+새로운 RS가 생긴 것을 확인할 수 있습니다:
 
 [#rs-v2-rolling]
 [.console-input]
@@ -211,7 +211,7 @@ myboot-7fbc4b97df   2         2         2       116s
 myboot-d78fb6d58    0         0         0       10m
 ----
 
-Describe the Deployment:
+Deployment를 describe합니다:
 
 
 :describe-deployment-name: myboot
@@ -219,7 +219,7 @@ Describe the Deployment:
 
 include::partial$describe-deployment.adoc[]
 
-And check out the Events section:
+그리고 Events 섹션을 확인합니다:
 
 [.console-output]
 [source,bash]
@@ -236,7 +236,7 @@ Events:
   Normal  ScalingReplicaSet  2m37s  deployment-controller  Scaled down replica set myboot-d78fb6d58 to 0
 ----
 
-You can list the revisions associated to your deployment by running the following command:
+다음 명령을 실행하면 deployment에 연결된 리비전 목록을 확인할 수 있습니다:
 [#rollout-history]
 [.console-input]
 [source, bash]
@@ -244,7 +244,7 @@ You can list the revisions associated to your deployment by running the followin
 kubectl rollout history deployment/myboot
 ----
 
-You can rollback to v1 using the following command:
+다음 명령으로 v1로 롤백할 수 있습니다:
 
 [#describe-rollback-rolling]
 [.console-input]
@@ -253,7 +253,7 @@ You can rollback to v1 using the following command:
 kubectl rollout undo deployment/myboot --to-revision=1
 ----
 
-And it rolls back to Aloha:
+그러면 Aloha로 롤백됩니다:
 
 [.console-output]
 [source,bash]
@@ -265,7 +265,7 @@ Aloha from Spring Boot! 0 on myboot-d78fb6d58-vnlch
 
 [IMPORTANT] 
 ====
-On minikube, you may receive errors from curl during the rollover activity.
+minikube에서는 롤오버가 진행되는 동안 curl에서 오류가 발생할 수 있습니다.
 
 [.console-output]
 [source,bash]
@@ -274,9 +274,9 @@ Aloha from Spring Boot! 119 on myboot-d78fb6d58-2zp4h
 curl: (7) Failed to connect to 192.168.99.100 port 31528: Connection refused
 ----
 
-The reason is the the missing Live and Ready Probes
+이는 Live와 Ready Probe가 없기 때문입니다.
 
-Try using the Quarkus image instead of the Spring Boot one
+Spring Boot 이미지 대신 Quarkus 이미지를 사용해 보세요.
 
 [#describe-rollback-quarkus-rolling]
 [.console-input]
@@ -285,7 +285,7 @@ Try using the Quarkus image instead of the Spring Boot one
 kubectl set image deployment/myboot myboot=quay.io/rhdevelopers/quarkus-demo:v1
 ----
 
-And there should be no errors, Quarkus simply boots up crazy fast
+그러면 오류가 발생하지 않아야 합니다. Quarkus는 그야말로 놀라울 정도로 빠르게 부팅됩니다.
 
 [.console-output]
 [source,bash]

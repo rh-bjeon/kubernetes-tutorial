@@ -5,7 +5,7 @@
 :chosen-node: devnation-m02
 // end::minikube[]
 
-Get a list of nodes:
+노드 목록을 조회합니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -34,14 +34,14 @@ devnation       Ready    control-plane,master   3d    v1.21.2
 # end::minikube[]
 ----
 
-Then pick a node in the list to label (such as the one highlighted)
+그런 다음 목록에서 레이블을 지정할 노드를 하나 고릅니다(강조 표시된 노드처럼).
 
 [.console-input]
 [source,bash,subs="+macros,+attributes,+quotes"]
 ----
 kubectl label nodes {chosen-node} #color=blue# #<.>
 ----
-<.> Notice that this matches the affinity in the pod
+<.> 이 값이 Pod의 affinity와 일치한다는 점에 주목하세요.
 
 [.console-output]
 [source,bash,subs="+attributes"]

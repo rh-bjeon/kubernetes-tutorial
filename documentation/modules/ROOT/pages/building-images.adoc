@@ -1,16 +1,16 @@
-= Building Images
+= 이미지 빌드하기
 
 // See antora yaml (such as github-pages.yml) to change what attribute docker-host is set to
 
-== Prerequisite
+== 사전 준비
 
-In this section, we are assuming you are running Docker in your local machine (either using Docker Tools or native Docker).
+이 섹션에서는 로컬 머신에서 Docker(Docker Tools 또는 네이티브 Docker)를 실행하고 있다고 가정합니다.
 
-IMPORTANT: To make it work correctly, you need to run this section in a new terminal window to avoid using the Kubernetes (`minikube`) environment used in previous sections.
+IMPORTANT: 이 섹션이 제대로 동작하도록 하려면, 이전 섹션에서 사용한 쿠버네티스(`minikube`) 환경을 사용하지 않도록 새 터미널 창에서 실행해야 합니다.
 
-== Build your application artifact
+== 애플리케이션 아티팩트 빌드하기
 
-First let's take a quick look at the application we're looking to build
+먼저 빌드하려는 애플리케이션을 간단히 살펴봅시다.
 
 :quick-open-file: MyRESTController.java
 include::partial$tip_vscode_quick_open.adoc[]
@@ -18,7 +18,7 @@ include::partial$tip_vscode_quick_open.adoc[]
 .MyRESTController.java
 image::hello-world-app.png[]
 
-Compile, build and test the Spring Boot Java project:
+Spring Boot Java 프로젝트를 컴파일, 빌드, 테스트합니다:
 
 [#build-building-images]
 [.console-input]
@@ -29,7 +29,7 @@ mvn clean package
 java -jar target/boot-demo-1.0.0.jar
 ----
 
-Then `curl` it in a separate terminal:
+그런 다음 별도의 터미널에서 ``curl``로 요청합니다:
 
 [.console-input]
 [source, bash]
@@ -43,11 +43,11 @@ curl localhost:8080
 Aloha from Spring Boot! 1 on unknown
 ----
 
-`unknown` because the environment variable is not currently set, it will be inside of a Docker container and inside of Kubernetes.
+``unknown``인 이유는 아직 환경 변수가 설정되지 않았기 때문이며, Docker 컨테이너와 쿠버네티스 안에서는 설정됩니다.
 
-== Build container image
+== 컨테이너 이미지 빌드하기
 
-NOTE: Change `quay.io` for your registry (e.g. `docker.io`) and `{myrepo}` to your organization.  This next step does assume you have a working installation of Docker for Mac/Windows/Linux.
+NOTE: ``quay.io``를 사용하려는 레지스트리(예: `docker.io`)로, ``{myrepo}``를 여러분의 조직 이름으로 바꾸세요. 다음 단계는 Mac/Windows/Linux용 Docker가 정상적으로 설치되어 있다고 가정합니다.
 
 [#build-container--building-images]
 [.console-input]
@@ -56,7 +56,7 @@ NOTE: Change `quay.io` for your registry (e.g. `docker.io`) and `{myrepo}` to yo
 docker build -t quay.io/{myrepo}/myapp:v1 .
 ----
 
-Results:
+결과:
 
 [.console-output]
 [source,bash, subs="+attributes"]
@@ -84,9 +84,9 @@ Successfully built 85b78b9b70b1
 Successfully tagged quay.io/{myrepo}/myapp:v1
 ----
 
-== Run the container image
+== 컨테이너 이미지 실행하기
 
-Run and Test your newly created Docker container:
+새로 만든 Docker 컨테이너를 실행하고 테스트합니다:
 
 [#run-container-building-images]
 [.console-input]
@@ -121,9 +121,9 @@ curl {docker-host}:8080/sysresources
 Memory: 1268 Cores: 3
 ----
 
-These numbers are based on the memory and CPUs allocated to the Docker daemon as seen in the image below:
+이 수치는 아래 이미지에 보이는 것처럼 Docker 데몬에 할당된 메모리와 CPU를 기준으로 합니다:
 
-.Docker settings
+.Docker 설정
 image::docker-settings.png[Docker Settings]
 
 [#curl-consume-container-building-images]
@@ -139,15 +139,15 @@ curl {docker-host}:8080/consume
 Allocated about 80% (1.2 GiB) of the max allowed JVM memory size (1.2 GiB)
 ----
 
-Stop & remove the Docker container:
+Docker 컨테이너를 멈추고 제거합니다:
 
 ----
 control-c
 ----
 
-== Run your container with constrained resources
+== 리소스를 제한한 상태로 컨테이너 실행하기
 
-Now, constrain the resources associated with this Linux container
+이제 이 Linux 컨테이너에 할당되는 리소스를 제한해 봅시다.
 
 [#run-container-constrained-building-images]
 [.console-input]
@@ -156,7 +156,7 @@ Now, constrain the resources associated with this Linux container
 docker run --rm -it -p 8080:8080 -m 400m --cpus="1" --name myapp quay.io/{myrepo}/myapp:v1
 ----
 
-Ask for the container's resources:
+컨테이너의 리소스 정보를 요청합니다:
 
 [#curl-sys-constrained-container-building-images]
 [.console-input]
@@ -171,7 +171,7 @@ curl {docker-host}:8080/sysresources
 Memory: 1268 Cores: 3
 ----
 
-Crash it:
+크래시를 발생시킵니다:
 
 [#curl-consume-crash-container-building-images]
 [.console-input]
@@ -180,9 +180,9 @@ Crash it:
 curl {docker-host}:8080/consume
 ----
 
-== Fix memory problems
+== 메모리 문제 해결하기
 
-To correct this behavior use a different Dockerfile:
+이 동작을 바로잡으려면 다른 Dockerfile을 사용합니다:
 
 [#build-mem-container-building-images]
 [.console-input]
@@ -191,7 +191,7 @@ To correct this behavior use a different Dockerfile:
 docker build -t quay.io/{myrepo}/myapp:v1 -f Dockerfile_Memory .
 ----
 
-Now docker run it:
+이제 docker run으로 실행합니다:
 
 [#run-sys-constrained-fix-container-building-images]
 [.console-input]
@@ -200,7 +200,7 @@ Now docker run it:
 docker run --rm -it -p 8080:8080 -m 400m --cpus="1" --name myapp quay.io/{myrepo}/myapp:v1
 ----
 
-And `curl` it:
+그리고 ``curl``로 요청합니다:
 
 [#curl-sys-constrained-fix-container-building-images]
 [.console-input]
@@ -215,7 +215,7 @@ curl {docker-host}:8080/sysresources
 Memory: 112 Cores: 3
 ----
 
-And try to crash it:
+그리고 다시 크래시를 시도합니다:
 
 [#curl-consume-fix-container-building-images]
 [.console-input]
@@ -230,7 +230,7 @@ curl {docker-host}:8080/consume
 Allocated about 80% (98.0 MiB) of the max allowed JVM memory size (112.0 MiB)
 ----
 
-Once you are happy with your container image, push it up to your favorite registry:
+컨테이너 이미지가 만족스럽다면 원하는 레지스트리로 푸시합니다:
 
 [#push-container-building-images]
 [.console-input]

@@ -1,15 +1,15 @@
 = Service
 
-NOTE: This follows the creation of the Deployment in the previous chapter
+NOTE: 이 장은 이전 장에서 만든 Deployment를 이어서 사용합니다.
 
-Make sure you are in the correct namespace:
+올바른 네임스페이스에 있는지 확인합니다:
 
 :section-k8s: services
 :set-namespace: myspace
 
 include::partial$set-context.adoc[]
 
-Make sure you have Deployment:
+Deployment가 있는지 확인합니다:
 
 [#have-deployment-service]
 [.console-input]
@@ -25,7 +25,7 @@ NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
 quarkus-demo-deployment   3/3     3            3           8m33s
 ----
 
-Make sure you have RS:
+RS가 있는지 확인합니다:
 
 [#have-rs-service]
 [.console-input]
@@ -41,7 +41,7 @@ NAME                                 DESIRED   CURRENT   READY   AGE
 quarkus-demo-deployment-5979886fb7   3         3         3       8m56s
 ----
 
-Make sure you have Pods:
+Pod가 있는지 확인합니다:
 
 [#have-pods-service]
 [.console-input]
@@ -59,7 +59,7 @@ quarkus-demo-deployment-5979886fb7-gdtnz   1/1     Running   0          9m17s
 quarkus-demo-deployment-5979886fb7-grf59   1/1     Running   0          9m17s
 ----
 
-Create a Service
+Service를 생성합니다.
 [#create-service]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -94,9 +94,9 @@ NAME          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 the-service   LoadBalancer   172.30.103.41   <pending>     80:31974/TCP     4s
 ----
 
-Wait until you see an external IP assigned.
+외부 IP가 할당될 때까지 기다립니다.
 
-NOTE: On Minikube without an Ingress controller, <pending> will not become a real external IP.  https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/[Optional: Setup Minikube Ingress]
+NOTE: Ingress 컨트롤러가 없는 Minikube에서는 <pending>이 실제 외부 IP로 바뀌지 않습니다. https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/[선택 사항: Minikube Ingress 설정하기]
 
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
@@ -109,7 +109,7 @@ myapp   LoadBalancer   172.30.103.41   34.71.122.153   8080:31974/TCP   44s
 :service-exposed: the-service
 include::partial$env-curl.adoc[]
 
-Results:
+결과:
 
 [.console-output]
 [source,bash]
@@ -117,15 +117,15 @@ Results:
 Supersonic Subatomic Java with Quarkus quarkus-demo-deployment-5979886fb7-grf59:1
 ----
 
-NOTE: "5979886fb7-grf59" is part of the unique id for the pod. The `.java` code uses `System.getenv().getOrDefault("HOSTNAME", "unknown");`
+NOTE: "5979886fb7-grf59"는 Pod의 고유 id의 일부입니다. `.java` 코드는 ``System.getenv().getOrDefault("HOSTNAME", "unknown");``을 사용합니다.
 
-== Ingress or Route
+== Ingress 또는 Route
 
-*Kubernetes Ingress* and *OpenShift Route* are functionally similar, resources used to expose applications externally.
+**Kubernetes Ingress**와 **OpenShift Route**는 애플리케이션을 외부에 노출하는 데 사용되는, 기능적으로 유사한 리소스입니다.
 
-The `Route` object was developed by Red Hat before the Kubernetes Ingress API was fully mature. It essentially bundles the traffic rule definition and its implementation (via the built-in HAProxy Router) into a single, opinionated feature.
+`Route` 객체는 Kubernetes Ingress API가 완전히 성숙하기 전에 Red Hat이 개발했습니다. 트래픽 규칙 정의와 그 구현(내장된 HAProxy Router를 통해)을 하나의 통합된 기능으로 묶어 제공합니다.
 
-Depending on your underlying platform, continue with the relevant path:
+사용 중인 플랫폼에 따라 해당하는 경로로 진행하세요:
 
 . <<#_kubernetes_ingress,Kubernetes Ingress>>
 . <<#_openshift_route,OpenShift Route>>
@@ -169,9 +169,9 @@ curl stuff-myspace.apps.gcp.burrsutter.dev
 Supersonic Subatomic Java with Quarkus quarkus-demo-deployment-5979886fb7-gdtnz:2
 ----
 
-In case of using Minikube follow: https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
+Minikube를 사용하는 경우에는 다음을 참고하세요: https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
 
-Remove the ingress:
+ingress를 제거합니다:
 
 [#delete-ingress]
 [.console-input]
@@ -197,7 +197,7 @@ NAME          HOST/PORT                                     PATH   SERVICES     
 the-service   the-service-myspace.apps.gcp.burrsutter.dev          the-service   8080                 None
 ----
 
-Then make a request to the service:
+그런 다음 service에 요청을 보냅니다:
 
 [#curl-services-route]
 [.console-input]
@@ -212,9 +212,9 @@ curl the-service-myspace.apps.gcp.burrsutter.dev
 Supersonic Subatomic Java with Quarkus quarkus-demo-deployment-5979886fb7-gdtnz:3
 ----
 
-=== Use jsonpath to pull out the data elements you need for scripting
+=== jsonpath로 스크립팅에 필요한 데이터 요소 추출하기
 
-The following command dumps the Kubernetes object to a file in JSON format:
+다음 명령은 쿠버네티스 객체를 JSON 형식의 파일로 덤프합니다:
 
 [.console-input]
 [source,bash]
@@ -222,7 +222,7 @@ The following command dumps the Kubernetes object to a file in JSON format:
 oc get route the-service -o json > myroutes.json
 ----
 
-It's also possible to extract specific information from the JSON using JSONPath syntax.
+JSONPath 문법을 사용해서 JSON에서 특정 정보만 추출할 수도 있습니다.
 
 [#route-jq]
 [.console-input]

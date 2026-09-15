@@ -1,32 +1,32 @@
-* 1. Requirements
-** xref:installation.adoc[Installation]
+* 1. 요구 사항
+** xref:installation.adoc[설치]
 *** xref:installation.adoc#tutorial-all-local[CLI]
-*** xref:installation.adoc#install-minikube[Install Minikube]
-*** xref:installation.adoc#start-kubernetes[Start Kubernetes]
+*** xref:installation.adoc#install-minikube[Minikube 설치]
+*** xref:installation.adoc#start-kubernetes[쿠버네티스 시작]
 
-* 2. Beginner
+* 2. 입문
 ** xref:kubectl.adoc[kubectl]
 ** xref:pod-rs-deployment.adoc[Pod, ReplicaSet, Deployment]
 ** xref:service.adoc[Service]
-** xref:logs.adoc[Logs]
-** xref:service-magic.adoc[Service Magic]
-** xref:blue-green.adoc[Blue/Green Deployments]
+** xref:logs.adoc[로그]
+** xref:service-magic.adoc[Service의 마법]
+** xref:blue-green.adoc[Blue/Green 배포]
 
-* 3. Elementary
-** xref:building-images.adoc[Building Images]
-** xref:resources.adoc[Resources and Limits]
-** xref:rolling-updates.adoc[Rolling updates]
+* 3. 초급
+** xref:building-images.adoc[이미지 빌드하기]
+** xref:resources.adoc[리소스와 제한]
+** xref:rolling-updates.adoc[롤링 업데이트]
 ** xref:live-ready.adoc[Liveness, Readiness & Startup]
 ** xref:configmap.adoc[ConfigMap]
 
-* 4. Intermediate
-** xref:secrets.adoc[Secrets]
-** xref:crds.adoc[Operators]
-** xref:volumes-persistentvolumes.adoc[Volumes]
-** xref:taints-affinity.adoc[Taints & Affinity]
-** xref::jobs-cronjobs.adoc[Jobs & CronJobs]
+* 4. 중급
+** xref:secrets.adoc[Secret]
+** xref:crds.adoc[Operator]
+** xref:volumes-persistentvolumes.adoc[Volume]
+** xref:taints-affinity.adoc[Taint & Affinity]
+** xref::jobs-cronjobs.adoc[Job & CronJob]
 ** xref::daemonset.adoc[DaemonSet]
 ** xref::statefulset.adoc[StatefulSet]
 
-* 5. Advanced
+* 5. 고급
 ** xref:ingress.adoc[Ingress]-

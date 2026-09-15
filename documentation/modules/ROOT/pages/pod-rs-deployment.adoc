@@ -1,6 +1,6 @@
 = Pod, ReplicaSet, Deployment
 
-First create a namespace to work in:
+먼저 작업할 네임스페이스를 생성합니다:
 
 [#create-namespace]
 [.console-input]
@@ -12,7 +12,7 @@ kubectl config set-context --current --namespace=myspace
 
 == Pod
 
-Create a https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replicasets-deployments-and-jobs[naked pod]:
+https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replicasets-deployments-and-jobs[네이키드 Pod]를 생성합니다:
 
 [#create-pod]
 [.console-input]
@@ -33,7 +33,7 @@ spec:
 EOF
 ----
 
-Watch the pod lifecycle:
+pod의 라이프사이클을 지켜봅니다:
 
 [#watch-pod]
 [.console-input]
@@ -49,7 +49,7 @@ NAME           READY   STATUS              RESTARTS   AGE
 quarkus-demo   0/1     ContainerCreating   0          10s
 ----
 
-From ContainerCreating to Running with Ready 1/1:
+ContainerCreating 상태에서 Running으로 바뀌면서 Ready가 1/1이 됩니다:
 
 [.console-output]
 [source,bash]
@@ -58,7 +58,7 @@ NAME           READY   STATUS    RESTARTS   AGE
 quarkus-demo   1/1     Running   0          18s
 ----
 
-Verify the application in the Pod:
+Pod 안의 애플리케이션을 확인합니다:
 
 [#verify-pod]
 [.console-input]
@@ -67,8 +67,8 @@ Verify the application in the Pod:
 kubectl exec -it quarkus-demo -- /bin/sh
 ----
 
-Run the next command.
-Notice that as you are inside the container instance, the hostname is `localhost`.
+다음 명령을 실행합니다.
+컨테이너 인스턴스 안에 있기 때문에 호스트 이름이 ``localhost``인 것에 주목하세요.
 
 [#curl-inside-pod]
 [.console-input]
@@ -84,7 +84,7 @@ Supersonic Subatomic Java with Quarkus quarkus-demo:1
 exit
 ----
 
-Let's delete the previous Pod:
+앞서 만든 Pod를 삭제해 봅시다:
 
 [#delete-naked-pod]
 [.console-input]
@@ -109,11 +109,11 @@ quarkus-demo   0/1     Terminating   0          9m35s
 No resources found in myspace namespace.
 ----
 
-A Naked Pod disappears forever.
+네이키드 Pod는 영원히 사라집니다.
 
 == ReplicaSet
 
-Create a ReplicaSet:
+ReplicaSet을 생성합니다:
 
 [#create-replicaset]
 [.console-input]
@@ -141,7 +141,7 @@ spec:
 EOF
 ----
 
-Get the pods with labels:
+레이블과 함께 pod 목록을 조회합니다:
 
 [#replicaset-show-labels]
 [.console-input]
@@ -173,7 +173,7 @@ NAME              DESIRED   CURRENT   READY   AGE
 rs-quarkus-demo   3         3         3       79s
 ----
 
-Describe the RS:
+RS를 describe합니다:
 
 [#describe-rs-quarkus-demo]
 [.console-input]
@@ -212,7 +212,7 @@ Events:
   Normal  SuccessfulCreate  89s   replicaset-controller  Created pod: rs-quarkus-demo-mlnng
 ----
 
-Pods are "owned" by the ReplicaSet:
+Pod는 ReplicaSet에 "소유"됩니다:
 
 [#rs-owned-ref]
 [.console-input]
@@ -234,7 +234,7 @@ kubectl get pod rs-quarkus-demo-mlnng -o jsonpath='{.metadata.ownerReferences[]}
 }
 ----
 
-Now delete a pod, while watching pods:
+이제 pod를 지켜보면서 pod 하나를 삭제합니다:
 
 [#delete-pod-rs]
 [.console-input]
@@ -243,7 +243,7 @@ Now delete a pod, while watching pods:
 kubectl delete pod rs-quarkus-demo-mlnng
 ----
 
-And a new pod will spring to life to replace it:
+그러면 이를 대체할 새 pod가 생겨납니다:
 
 [.console-output]
 [source,bash]
@@ -254,7 +254,7 @@ rs-quarkus-demo-jd6jk   1/1     Running             0          109s   app=quarku
 rs-quarkus-demo-t26gt   1/1     Running             0          109s   app=quarkus-demo,env=dev
 ----
 
-Delete the ReplicaSet to remove all the associated pods:
+ReplicaSet을 삭제해서 연결된 모든 pod를 제거합니다:
 
 [#delete-rs]
 [.console-input]
@@ -323,5 +323,5 @@ kubectl exec -it quarkus-demo-deployment-5979886fb7-c888m -- curl localhost:8080
 Supersonic Subatomic Java with Quarkus quarkus-demo-deployment-5979886fb7-c888m:1
 ----
 
-In the next section, you'll learn the concept of `Service`.
-This is an important element in Kubernetes ecosystem.
+다음 섹션에서는 ``Service``라는 개념을 배웁니다.
+이는 쿠버네티스 생태계에서 중요한 요소입니다.

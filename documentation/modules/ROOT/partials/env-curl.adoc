@@ -15,7 +15,7 @@ PORT=$(kubectl get service/{tmp-service-exposed} -o jsonpath="{.spec.ports[*].no
 Hosted::
 +
 --
-If using a hosted Kubernetes cluster like OpenShift then use curl and the EXTERNAL-IP address with port `8080` or get it using `kubectl`:
+OpenShift와 같은 호스팅형 쿠버네티스 클러스터를 사용하고 있다면, `8080` 포트의 EXTERNAL-IP 주소로 curl을 사용하거나 ``kubectl``로 주소를 가져오세요:
 
 :tmp-service-exposed: {service-exposed}
 
@@ -26,7 +26,7 @@ IP=$(kubectl get service {tmp-service-exposed} -o jsonpath="{.status.loadBalance
 PORT=$(kubectl get service {tmp-service-exposed} -o jsonpath="{.spec.ports[*].port}")
 ----
 
-IMPORTANT: If you are in AWS, you need to get the `hostname` instead of `ip.`
+IMPORTANT: AWS를 사용 중이라면 `ip` 대신 ``hostname``을 가져와야 합니다.
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -36,7 +36,7 @@ IP=$(kubectl get service {tmp-service-exposed} -o jsonpath="{.status.loadBalance
 --
 ====
 
-Curl the Service:
+Service에 curl 요청을 보냅니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]

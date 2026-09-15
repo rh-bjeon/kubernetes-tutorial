@@ -1,5 +1,5 @@
 
-Let's use the `minikube ssh` command to simulate a connection to the kubernetes node.  (There is only one node running in minikube)
+`minikube ssh` 명령을 사용해서 쿠버네티스 노드에 연결하는 것을 시뮬레이션해 봅시다. (minikube에는 노드가 하나만 실행됩니다)
 
 [.console-input]
 [source,bash]
@@ -14,6 +14,6 @@ Last login: Tue Jul 13 08:26:18 2021 from 192.168.49.1
 docker@devnation:~$
 ----
 
-Now that we're there, let's watch the `{mount-dir}` directory that the pod has mounted as `/tmp/demo`
+이제 노드에 접속했으니, Pod가 ``/tmp/demo``로 마운트한 `{mount-dir}` 디렉터리를 지켜봅시다.
 
 include::partial$file-watch-command.adoc[]

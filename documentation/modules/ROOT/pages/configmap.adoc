@@ -1,14 +1,14 @@
 = ConfigMap
 
-ConfigMap is the Kubernetes resource that allows you to externalize your application's configuration.
+ConfigMap은 애플리케이션의 설정을 외부화할 수 있게 해주는 쿠버네티스 리소스입니다.
 
-*_An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc)._*
+**__앱의 설정이란 배포 환경(스테이징, 프로덕션, 개발자 환경 등)에 따라 달라질 가능성이 있는 모든 것을 말합니다.__**
 
 https://12factor.net/config[12 Factor Apps]
 
-== Environment Variables
+== 환경 변수
 
-MyRESTController.java includes a small chunk of code that looks to the environment
+MyRESTController.java에는 환경을 참조하는 작은 코드 조각이 포함되어 있습니다.
 
 [source,java]
 ----
@@ -26,10 +26,10 @@ MyRESTController.java includes a small chunk of code that looks to the environme
    }
 ----
 
-Environment variables can be manipulated at the Deployment level. 
-Changes cause Pod redeployment.
+환경 변수는 Deployment 수준에서 조작할 수 있습니다.
+변경하면 Pod가 다시 배포됩니다.
 
-Deploy `myboot`:
+``myboot``를 배포합니다:
 
 [#deploy-myboot-configmaps]
 [.console-input]
@@ -38,7 +38,7 @@ Deploy `myboot`:
 kubectl apply -f apps/kubefiles/myboot-deployment.yml
 ----
 
-Deploy `myboot` Service:
+`myboot` Service를 배포합니다:
 
 [#deploy-myboot-service-configmaps]
 [.console-input]
@@ -47,12 +47,12 @@ Deploy `myboot` Service:
 kubectl apply -f apps/kubefiles/myboot-service.yml
 ----
 
-And watch the pods status:
+그리고 pod의 상태를 지켜봅니다:
 
 :section-k8s: configmap
 include::partial$watching-pods.adoc[]
 
-Ask the application for its configuration:
+애플리케이션에 설정 정보를 요청합니다:
 
 :section-k8s: configmaps
 :service-exposed: myboot
@@ -75,7 +75,7 @@ greeting=Default
 love=Default
 ----
 
-== Set Environment Variables
+== 환경 변수 설정하기
 
 [#set-env-vars]
 [.console-input]
@@ -86,7 +86,7 @@ kubectl set env deployment/myboot GREETING="namaste" \
   DBCONN="jdbc:sqlserver://45.91.12.123:1443;user=MyUserName;password=*****;"
 ----
 
-Watch the pods being reborn:
+pod가 새로 태어나는 것을 지켜봅니다:
 
 [.console-output]
 [source,bash]
@@ -113,7 +113,7 @@ greeting=namaste
 love=Aloha
 ----
 
-Describe the deployment:
+deployment를 describe합니다:
 
 :section-k8s: configmaps
 :describe-deployment-name: myboot
@@ -138,7 +138,7 @@ include::partial$describe-deployment.adoc[]
 ...  
 ----
 
-Remove environment variables:
+환경 변수를 제거합니다:
 
 [#remove-env-vars-configmaps]
 [.console-input]
@@ -149,7 +149,7 @@ kubectl set env deployment/myboot GREETING- \
   DBCONN-
 ----
 
-And verify that they have been removed:
+그리고 제거되었는지 확인합니다:
 
 [#get-config3-configmaps]
 [.console-input]
@@ -168,7 +168,7 @@ greeting=Default
 love=Default
 ----
 
-==  Create a ConfigMap
+==  ConfigMap 생성하기
 
 [#create-configmap-configmaps]
 [.console-input]
@@ -198,7 +198,7 @@ kubectl get cm my-config -o json
 ...    
 ----
 
-Or you can describe the `ConfigMap` object:
+또는 `ConfigMap` 객체를 describe할 수도 있습니다:
 
 [#describe-configmap-configmaps]
 [.console-input]
@@ -226,9 +226,9 @@ Amour
 Events:  <none>
 ----
 
-.Using `kubectl edit` to view resources
+.리소스를 확인할 때 `kubectl edit` 사용하기
 ****
-For large files you might find using `kubectl edit` is more convenient for viewing resources on the cluster.  In our case, we can view the config map by running the following (and aborting any changes!):
+큰 파일의 경우 클러스터의 리소스를 확인할 때 ``kubectl edit``을 사용하는 편이 더 편리할 수 있습니다. 여기서는 다음 명령을 실행해서(변경 사항은 저장하지 말고 취소하세요!) config map을 확인할 수 있습니다:
 
 include::partial$tip_vscode_kube_editor.adoc[]
 
@@ -239,7 +239,7 @@ kubectl edit cm my-config
 ----
 ****
 
-Now deploy the app with its request for the `ConfigMap`:
+이제 ``ConfigMap``을 요청하는 앱을 배포합니다:
 
 [#deploy-myboot-configmap-configmaps]
 [.console-input]
@@ -248,7 +248,7 @@ Now deploy the app with its request for the `ConfigMap`:
 kubectl apply -f apps/kubefiles/myboot-deployment-configuration.yml
 ----
 
-And get its configure endpoint:
+그리고 configure 엔드포인트를 확인합니다:
 
 [#get-config4-configmaps]
 [.console-input]
@@ -267,7 +267,7 @@ greeting=jambo
 love=Amour
 ----
 
-And switch to the other properties file by recreating the `ConfigMap`:
+그리고 ``ConfigMap``을 다시 만들어서 다른 properties 파일로 전환합니다:
 
 [#delete-pod-configmap-configmaps]
 [.console-input]
@@ -295,11 +295,11 @@ hello=Default
 love=Default
 ----
 
-There are a lot more ways to have fun with ConfigMaps. The core documentation has you manipulate a Pod specification instead of a Deployment, but the results are basically the same:
+ConfigMap을 가지고 즐길 수 있는 방법은 이 밖에도 많습니다. 공식 문서에서는 Deployment 대신 Pod 스펙을 직접 조작하지만 결과는 기본적으로 동일합니다:
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap
 
 
-== Clean Up
+== 정리
 
 [#clean-configmaps]
 [.console-input]

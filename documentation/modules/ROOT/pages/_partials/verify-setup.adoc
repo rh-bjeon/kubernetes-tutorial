@@ -1,5 +1,5 @@
 
-The following checks ensure that each chapter exercises are done with the right environment settings.
+다음 점검을 통해 각 장의 실습이 올바른 환경 설정에서 진행되는지 확인할 수 있습니다.
 
 [#minikube-config-view]
 [.console-input]
@@ -8,7 +8,7 @@ The following checks ensure that each chapter exercises are done with the right 
 minikube config view
 ----
 
-The command should return an output as shown:
+이 명령은 다음과 같은 출력을 반환해야 합니다:
 
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
@@ -27,7 +27,7 @@ The command should return an output as shown:
 kubectl cluster-info
 ----
 
-The command should return an output as shown:
+이 명령은 다음과 같은 출력을 반환해야 합니다:
 
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
@@ -38,10 +38,10 @@ KubeDNS is running at https://192.168.99.100:8443/api/v1/namespaces/kube-system/
 
 [NOTE]
 ====
-To further debug and diagnose cluster problems, use `kubectl cluster-info dump`.
+클러스터 문제를 더 자세히 디버깅하고 진단하려면 ``kubectl cluster-info dump``를 사용하세요.
 ====
 
-* Set your local docker to use the minikube docker daemon
+* 로컬 docker가 minikube의 docker 데몬을 사용하도록 설정합니다.
 
 [#minikube-set-env]
 [.console-input]
@@ -50,7 +50,7 @@ To further debug and diagnose cluster problems, use `kubectl cluster-info dump`.
 eval $(minikube docker-env)
 ----
 
-* Kubernetes should be {kubernetes-version}
+* 쿠버네티스 버전은 {kubernetes-version}이어야 합니다.
 
 [#kubectl-version]
 [.console-input]

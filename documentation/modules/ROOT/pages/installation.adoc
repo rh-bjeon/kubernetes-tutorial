@@ -1,8 +1,8 @@
-= Installation & Setup
+= 설치 및 설정
 include::_attributes.adoc[]
 
 [#tutorial-all-local]
-== CLI tools
+== CLI 도구
 
 include::partial$prerequisites-kubernetes.adoc[]
 |===
@@ -11,9 +11,9 @@ include::partial$optional-requisites.adoc[]
 |===
 
 [#download-tutorial-sources]
-== Download Tutorial Sources
+== 튜토리얼 소스 다운로드하기
 
-Before we start setting up the environment, let's clone the tutorial sources and set the `TUTORIAL_HOME` environment variable to point to the root directory of the tutorial:
+환경을 설정하기 전에, 먼저 튜토리얼 소스를 클론하고 `TUTORIAL_HOME` 환경 변수가 튜토리얼의 루트 디렉터리를 가리키도록 설정해 봅시다:
 
 :tutorial-url: {github-repo}
 :folder: kubernetes-tutorial
@@ -22,21 +22,21 @@ include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-c
 [IMPORTANT,subs="attributes+,+macros"]
 ====
 
-This tutorial was developed and tested with:
+이 튜토리얼은 다음 환경에서 개발 및 테스트되었습니다:
 
 - Minikube `{minikube-version}`
 - OpenShift `{openshift-version}`
 ====
 
 [#install-minikube]
-=== Install Minikube
+=== Minikube 설치하기
 
 include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/install-minikube.adoc[]
 
 [#start-kubernetes]
-=== Start Kubernetes
+=== 쿠버네티스 시작하기
 
-There are a series of commands as steps that allow you to get started with minikube. The following section shows how to start minikube with minimal and required configurations:
+minikube로 시작하는 데 필요한 일련의 명령어 단계들이 있습니다. 다음 섹션에서는 최소한의 필수 설정으로 minikube를 시작하는 방법을 보여줍니다:
 
 
 :profile: devnation

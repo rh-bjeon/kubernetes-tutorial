@@ -1,6 +1,6 @@
-= Service Magic
+= Service의 마법
 
-Create a Namespace:
+네임스페이스를 생성합니다:
 
 [#create-namespace]
 [.console-input]
@@ -10,7 +10,7 @@ kubectl create namespace funstuff
 kubectl config set-context --current --namespace=funstuff
 ----
 
-== Deploy mypython
+== mypython 배포하기
 
 [#deploy-mypython]
 [.console-input]
@@ -39,7 +39,7 @@ spec:
 EOF
 ----
 
-== Deploy mygo
+== mygo 배포하기
 
 [#deploy-mygo]
 [.console-input]
@@ -68,7 +68,7 @@ spec:
 EOF
 ----
 
-== Deploy mynode
+== mynode 배포하기
 
 [#deploy-mynode]
 [.console-input]
@@ -155,7 +155,7 @@ NAME         ENDPOINTS   AGE
 my-service   <none>      2m6s
 ----
 
-Alternatively, you extract only service endpoints with the following command you'll get no result:
+또는 다음 명령으로 service 엔드포인트만 추출해 볼 수 있는데, 결과가 없을 것입니다:
 
 [#get-endpoints1]
 [.console-input]
@@ -164,17 +164,17 @@ Alternatively, you extract only service endpoints with the following command you
 kubectl get endpoints my-service -o jsonpath='{.subsets[].addresses[*].ip}{"\n"}'
 ----
 
-Initialize `IP` and `PORT` envirnment variables to reach the service:
+service에 접근하기 위해 ``IP``와 `PORT` 환경 변수를 초기화합니다:
 
 :section-k8s: servicemagic
 :service-exposed: my-service
 include::partial$env-curl.adoc[]
 
-And run loop script:
+그리고 loop 스크립트를 실행합니다:
 
 include::partial$loop.adoc[]
 
-The client may experience either *connection refusal* or a *delay* before timing out, depending on the features of the load balancer.
+로드 밸런서의 특성에 따라 클라이언트는 **연결 거부**를 겪거나, 타임아웃되기 전까지 **지연**을 겪을 수 있습니다.
 
 [.console-output]
 [source,bash]
@@ -248,7 +248,7 @@ kubectl get endpoints my-service -o jsonpath='{.subsets[].addresses[*].ip}{"\n"}
 10.130.2.43 10.130.2.44 10.130.2.45
 ----
 
-See the Pod IPs:
+Pod IP를 확인합니다:
 
 [#pod-ips]
 [.console-input]
@@ -257,7 +257,7 @@ See the Pod IPs:
 kubectl get pods -o wide
 ----
 
-Remove `mypython` Pod from the Service:
+`mypython` Pod를 Service에서 제거합니다:
 
 [#remove-label]
 [.console-input]
@@ -279,7 +279,7 @@ kubectl get endpoints my-service -o jsonpath='{.subsets[].addresses[*].ip}{"\n"}
 10.130.2.44 10.130.2.45
 ----
 
-== Clean Up
+== 정리
 
 [#clean-up]
 [.console-input]

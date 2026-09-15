@@ -1,10 +1,10 @@
-= Logs
+= 로그
 
-There are various "production-ready" ways to do log gathering and viewing across a Kubernetes/OpenShift cluster. Many folks like some flavor of ELK (ElasticSearch, Logstash, Kibana) or EFK (ElasticSearch, FluentD, Kibana).
+쿠버네티스/OpenShift 클러스터 전반에서 로그를 수집하고 확인하는 "프로덕션 준비" 방식은 다양합니다. 많은 사람들이 ELK(ElasticSearch, Logstash, Kibana)나 EFK(ElasticSearch, FluentD, Kibana) 계열을 선호합니다.
 
-The focus here is on things a developer needs to get access to do in order to help understand the behavior of their application running inside of a pod.
+여기서는 개발자가 pod 안에서 실행 중인 애플리케이션의 동작을 이해하는 데 필요한 것들에 초점을 맞춥니다.
 
-Make sure you have an application (Deployment) running:
+애플리케이션(Deployment)이 실행 중인지 확인합니다:
 
 [#create-deployment]
 [.console-input]
@@ -35,7 +35,7 @@ spec:
 EOF
 ----
 
-Make sure you are running 3 replicas (3 pods/instances of your application):
+복제본이 3개(애플리케이션의 pod/인스턴스 3개) 실행 중인지 확인합니다:
 
 [#logs-get-replicas]
 [.console-input]
@@ -44,7 +44,7 @@ Make sure you are running 3 replicas (3 pods/instances of your application):
 kubectl get deployment my-deployment -o jsonpath='{.status.replicas}{"\n"}'
 ----
 
-If not, scale up to 3:
+그렇지 않다면 3개로 스케일업합니다:
 
 [#logs-scale-replicas]
 [.console-input]
@@ -82,7 +82,7 @@ kubectl logs my-deployment-5dc67997c7-m7z9f
 
 ----
 
-You can follow logs with `-f` parameter:
+`-f` 파라미터로 로그를 실시간으로 따라갈 수 있습니다:
 
 [#logs-log-deployment-follow]
 [.console-input]
@@ -91,7 +91,7 @@ You can follow logs with `-f` parameter:
 kubectl logs my-deployment-5dc67997c7-m7z9f -f
 ----
 
-And in another Terminal:
+그리고 다른 터미널에서:
 
 [.console-input]
 [source,bash]
@@ -106,7 +106,7 @@ curl localhost:8080
 Aloha from my-deployment-5dc67997c7-m7z9f
 ----
 
-Deploy a Service for `my-deployment`:
+``my-deployment``를 위한 Service를 배포합니다:
 
 [#create-service]
 [.console-input]
@@ -128,17 +128,17 @@ spec:
 EOF
 ----
 
-In another Terminal, loop and curl that service:
+다른 터미널에서 해당 service에 반복해서 curl 요청을 보냅니다:
 
 :section-k8s: logs
 :service-exposed: the-service
 include::partial$env-curl.adoc[]
 
-Start sending the request in a loop:
+요청을 반복해서 보내기 시작합니다:
 
 include::partial$loop.adoc[]
 
-Show the logs from all pods appending the `--all-pods` option:
+`--all-pods` 옵션을 추가해서 모든 pod의 로그를 보여줍니다:
 
 [#all-pods]
 [.console-input]
@@ -156,14 +156,14 @@ my-deployment-5dc67997c7-s4jc6 myapp Aloha from my-deployment-5dc67997c7-s4jc6
 my-deployment-5dc67997c7-s4jc6 myapp Aloha from my-deployment-5dc67997c7-s4jc6
 ----
 
-Other popular tools to show the logs are:
+로그를 보는 데 자주 쓰이는 다른 도구는 다음과 같습니다:
 
 . https://github.com/wercker/stern[stern]
 . https://github.com/boz/kail[kail]:
 
 [TIP]
 ====
-To potentially pull the logs from a failing pod use `-p`
+실패한 pod의 로그를 가져오고 싶을 수도 있는 경우에는 ``-p``를 사용하세요.
 
 [.console-input]
 [source,bash]
@@ -172,7 +172,7 @@ kubectl logs my-deployment-5dc67997c7-s4jc6 -p
 ----
 ====
 
-== Clean Up
+== 정리
 
 [#clean-up]
 [.console-input]

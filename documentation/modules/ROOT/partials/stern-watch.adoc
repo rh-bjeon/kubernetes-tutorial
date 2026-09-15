@@ -2,7 +2,7 @@
 
 // FIXME: the attributes inside the code block in the tab don't get filled in 
 // if they are not first used outside the tab block
-We are going to have stern watch the {stern-namespace} namespace for {stern-pattern}
+stern으로 {stern-namespace} 네임스페이스에서 {stern-pattern}을 지켜보겠습니다.
 
 [tabs]
 ====

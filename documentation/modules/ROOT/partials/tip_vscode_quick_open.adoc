@@ -1,4 +1,4 @@
 [TIP]
 ====
-If you're running this from within VSCode you can use kbd:[CTRL+p] (or kbd:[CMD+p] on Mac OSX) to quickly open `{quick-open-file}`
+VSCode 안에서 이 튜토리얼을 진행하고 있다면 kbd:[CTRL+p](Mac OSX에서는 kbd:[CMD+p])를 사용해서 ``{quick-open-file}``을 빠르게 열 수 있습니다.
 ====

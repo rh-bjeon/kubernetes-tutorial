@@ -1,10 +1,10 @@
 = Ingress
 
-Make sure you are in the correct namespace.
+올바른 네임스페이스에 있는지 확인합니다.
 
-== Enable Ingress Controller
+== Ingress 컨트롤러 활성화하기
 
-In case of using `minikube` you need to enable NGNIX Ingress controller.
+``minikube``를 사용하는 경우에는 NGINX Ingress 컨트롤러를 활성화해야 합니다.
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -12,7 +12,7 @@ In case of using `minikube` you need to enable NGNIX Ingress controller.
 minikube addons enable ingress -p devnation
 ----
 
-Wait a minute or so and verify that it has been deployed correctly:
+1분 정도 기다린 다음 정상적으로 배포되었는지 확인합니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -28,7 +28,7 @@ ingress-nginx-admission-patch-z2lzj         0/1     Completed   2          6m28s
 ingress-nginx-controller-69ccf5d9d8-95xgp   1/1     Running     0          6m28s
 ----
 
-== Deploy Application
+== 애플리케이션 배포하기
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -58,7 +58,7 @@ spec:
 EOF
 ----
 
-Expose the service:
+service를 노출합니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -83,9 +83,9 @@ quarkus-demo-deployment   NodePort   10.105.106.66   <none>        8080:30408/TC
 :service-exposed: quarkus-demo-deployment
 include::partial$env-curl.adoc[]
 
-== Configuring Ingress
+== Ingress 설정하기
 
-An Ingress resource is defined as:
+Ingress 리소스는 다음과 같이 정의합니다:
 
 [source, yaml]
 ----
@@ -115,7 +115,7 @@ spec:
 kubectl apply -f apps/kubefiles/demo-ingress.yaml
 ----
 
-Get the information from the Ingress resource:
+Ingress 리소스의 정보를 조회합니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -130,12 +130,12 @@ NAME              CLASS    HOSTS                 ADDRESS          PORTS   AGE
 example-ingress   <none>   kube-devnation.info   192.168.99.115   80      68s
 ----
 
-You need to wait until address field is set.
-It might take some minutes.
+address 필드가 설정될 때까지 기다려야 합니다.
+몇 분 정도 걸릴 수 있습니다.
 
-Modify the `/etc/hosts` to point the hostname to the Ingress address.
+호스트 이름이 Ingress 주소를 가리키도록 ``/etc/hosts``를 수정합니다.
 
-IMPORTANT: If you are using minikube, use the `minikube ip -p kube` as address because the Ingress IP is an internal IP.
+IMPORTANT: minikube를 사용하는 경우, Ingress IP는 내부 IP이므로 ``minikube ip -p kube``를 주소로 사용하세요.
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -156,9 +156,9 @@ curl kube-devnation.info
 Supersonic Subatomic Java with Quarkus quarkus-demo-deployment-8cf45f5c8-qmzwl:1
 ----
 
-== Second Deployment
+== 두 번째 Deployment
 
-Deploy a second version of the service:
+service의 두 번째 버전을 배포합니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -192,9 +192,9 @@ EOF
 kubectl expose deployment mynode-deployment --type=NodePort --port=8000
 ----
 
-== Ingress Update
+== Ingress 업데이트
 
-Then you need to update the Ingress resource with the new `path`:
+이제 새 ``path``로 Ingress 리소스를 업데이트해야 합니다:
 
 [source, yaml]
 ----
@@ -225,7 +225,7 @@ spec:
 kubectl apply -f apps/kubefiles/demo-ingress-2.yaml
 ----
 
-Test it:
+테스트해 봅니다:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -252,7 +252,7 @@ Node Bonjour on mynode-deployment-77c7bf857d-5nfl4 0
 ----
 
 
-== Clean Up
+== 정리
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
