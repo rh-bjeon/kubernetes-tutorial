@@ -1,8 +1,7 @@
 * 1. 요구 사항
 ** xref:installation.adoc[설치]
 *** xref:installation.adoc#tutorial-all-local[CLI]
-*** xref:installation.adoc#install-minikube[Minikube 설치]
-*** xref:installation.adoc#start-kubernetes[쿠버네티스 시작]
+*** xref:installation.adoc#start-kubernetes[환경 확인하기]
 
 * 2. 입문
 ** xref:kubectl.adoc[kubectl]
@@ -13,7 +12,6 @@
 ** xref:blue-green.adoc[Blue/Green 배포]
 
 * 3. 초급
-** xref:building-images.adoc[이미지 빌드하기]
 ** xref:resources.adoc[리소스와 제한]
 ** xref:rolling-updates.adoc[롤링 업데이트]
 ** xref:live-ready.adoc[Liveness, Readiness & Startup]
@@ -21,9 +19,7 @@
 
 * 4. 중급
 ** xref:secrets.adoc[Secret]
-** xref:crds.adoc[Operator]
 ** xref:volumes-persistentvolumes.adoc[Volume]
-** xref:taints-affinity.adoc[Taint & Affinity]
 ** xref::jobs-cronjobs.adoc[Job & CronJob]
 ** xref::daemonset.adoc[DaemonSet]
 ** xref::statefulset.adoc[StatefulSet]

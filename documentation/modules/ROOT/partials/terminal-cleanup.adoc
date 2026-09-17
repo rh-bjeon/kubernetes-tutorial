@@ -57,7 +57,7 @@ exit
 --
 kbd:[CTRL+c]를 눌러 ``watch``를 종료합니다.
 
-그런 다음 `ssh` 셸에서 다음을 입력합니다.
+그런 다음 노드 디버그 세션에서 다음을 입력합니다.
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]

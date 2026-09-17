@@ -24,7 +24,7 @@ include::_attributes.adoc[]
 === 네임스페이스
 
 :section-k8s: volumes
-:set-namespace: myspace
+:set-namespace: {user}-myspace
 
 올바른 네임스페이스 ``{set-namespace}``가 생성되어 있고 컨텍스트가 이를 가리키도록 설정되어 있는지 확인합니다.
 
@@ -473,7 +473,7 @@ include::partial$create-greeting-file.adoc[]
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
 ----
-Every 1.0s: eval ls -al /mnt/da...  devnation: Tue Jul 13 09:14:28 2021
+Every 1.0s: ls -al /host/mnt/da...  devnation: Tue Jul 13 09:14:28 2021
 
 total 4
 drwxr-xr-x. 1 root root 24 Jul 13 09:13 .
@@ -682,7 +682,7 @@ include::partial$create-greeting-file.adoc[]
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
 ----
-Every 1.0s: ls -al {mount-dir} && eval c...  devnation: Mon Jul 19 14:07:53 2021
+Every 1.0s: ls -al /host{mount-dir} && eval c...  devnation: Mon Jul 19 14:07:53 2021
 
 total 4
 drwxr-xr-x. 1 root root 24 Jul 19 14:06 .
@@ -747,21 +747,6 @@ PVC가 생성되고 나면, 스토리지 장치와 PV가 자동으로 만들어�
 kubectl get sc
 ----
 
-[tabs]
-====
-Minikube::
-+
---
-[.console-output]
-[source,bash,subs="+macros,+attributes"]
-----
-NAME                 PROVISIONER                RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
-standard (default)   k8s.io/minikube-hostpath   Delete          Immediate           false                  47d
-----
---
-OpenShift::
-+
---
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
 ----
@@ -770,9 +755,7 @@ gp2 (default)   kubernetes.io/aws-ebs   31h
 ----
 
 OpenShift가 클라우드 제공업체에 설치되면 기본적으로 그 클라우드의 기반 영구 스토리지 기술을 사용하는 Storage Class를 자동으로 생성합니다.
-예를 들어 AWS의 경우, AWS EBS를 가리키는 기본 Storage Class가 제공됩니다.
---
-====
+예를 들어 AWS의 경우, AWS EBS를 가리키는 기본 Storage Class가 제공됩니다. (실제 표시되는 `PROVISIONER` 값은 이 클러스터가 어떤 클라우드에 설치되었는지에 따라 다를 수 있습니다.)
 
 그런 다음 Persistent Volume Claim을 생성하면 Persistent Volume이 자동으로 생성됩니다. kbd:[CTRL+p]를 사용해서 ``demo-dynamic-persistent.yaml``을 빠르게 열어보세요:
 
@@ -803,29 +786,12 @@ kubectl apply -f apps/kubefiles/demo-dynamic-persistent.yaml
 kubectl get pvc
 ----
 
-[tabs]
-====
-Minikube::
-+
---
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
 ----
 NAME                 STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-myboot-volumeclaim   Pending                                      standard       2s
+myboot-volumeclaim   Pending                                      gp2            46s
 ----
---
-OpenShift::
-+
---
-[.console-output]
-[source,bash,subs="+macros,+attributes"]
-----
-NAME                 STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-myboot-volumeclaim   Pending                                      gp2            46sç
-----
---
-====
 
 __PVC__가 __Pending__ STATUS인 것에 주목하세요. 우리가 만들고 있는 것이 동적 스토리지라는 것을 기억해 보면, 이는 __pod__가 volume을 요청하기 전까지는 __PVC__가 pending 상태로 남아 있고 __PV__도 생성되지 않는다는 의미입니다.
 
@@ -857,29 +823,12 @@ pod가 __Running__ 상태가 되면, __PVC__와 __PV__의 매개변수를 확인
 kubectl get pvc
 ----
 
-[tabs]
-====
-Minikube::
-+
---
-[.console-output]
-[source,bash,subs="+macros,+attributes"]
-----
-NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-myboot-volumeclaim   Bound    pvc-170f2e9a-4afc-4869-bd19-f10c86bff34b   10Mi       RWO            standard       5s
-----
---
-OpenShift::
-+
---
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
 ----
 NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 myboot-volumeclaim   Bound    pvc-6de4f27e-bd40-4b58-bb46-91eb08ca5bd7   1Gi        RWO            gp2            116s
 ----
---
-====
 
 
 이제 volume claim이 volume에 __Bound__ 된 것에 주목하세요.
@@ -892,29 +841,12 @@ myboot-volumeclaim   Bound    pvc-6de4f27e-bd40-4b58-bb46-91eb08ca5bd7   1Gi    
 kubectl get pv
 ----
 
-[tabs]
-====
-Minikube::
-+
---
-[.console-output]
-[source,bash,subs="+macros,+attributes"]
-----
-NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                        STORAGECLASS   REASON   AGE
-pvc-170f2e9a-4afc-4869-bd19-f10c86bff34b   10Mi       RWO            Delete           Bound    myspace/myboot-volumeclaim   standard                56s
-----
---
-OpenShift::
-+
---
 [.console-output]
 [source,bash,subs="+macros,+attributes"]
 ----
 NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                        STORAGECLASS   REASON   AGE
 pvc-6de4f27e-bd40-4b58-bb46-91eb08ca5bd7   1Gi        RWO            Delete           Bound    default/myboot-volumeclaim   gp2                     77s
 ----
---
-====
 
 __CLAIM__ 필드가 __PV__ 생성을 담당한 __PVC__를 가리키는 것에 주목하세요.
 

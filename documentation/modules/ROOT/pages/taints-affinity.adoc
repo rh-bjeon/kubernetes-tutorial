@@ -8,10 +8,6 @@ include::_attributes.adoc[]
 
 == 준비
 
-=== Minikube 멀티 노드
-
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/minikube-multinode.adoc[]
-
 === 노드 지켜보기
 
 어떤 일이 벌어지는지 관찰할 수 있도록, 다른 터미널(**{watch-terminal}**)을 열어서 노드의 taint를 바꾸는 동안 pod에 어떤 일이 일어나는지 ``watch``해 봅시다.
@@ -114,21 +110,10 @@ myboot-7cbfbd9b89-hqx6h   0/1     #Pending#   4m12s   devnation
 
 [tabs]
 ====
-터미널 1 - Minikube::
+터미널 1::
 +
 --
-// include untagged regions and any regions tagged with minikube
-// See: https://docs.asciidoctor.org/asciidoc/latest/directives/include-tagged-regions/#tagging-regions
-include::partial$taint-remove-taint.adoc[tags=**;!*;minikube]
-
---
-터미널 1 - OpenShift::
-+
---
-// Include all untagged regions and any regions tagged with openshift
-// See: https://docs.asciidoctor.org/asciidoc/latest/directives/include-tagged-regions/#tagging-regions
-include::partial$taint-remove-taint.adoc[tags=**;!*;openshift]
-
+include::partial$taint-remove-taint.adoc[]
 --
 ====
 
@@ -491,15 +476,10 @@ affinity 표현식과 일치하는 **레이블**을 노드에 만들어 봅시�
 
 [tabs]
 ====
-터미널 1 - Minikube::
+터미널 1::
 +
 --
-include::partial$affinity_label.adoc[tags=**;!*;minikube]
---
-터미널 1 - OpenShift::
-+
---
-include::partial$affinity_label.adoc[tags=**;!*;openshift]
+include::partial$affinity_label.adoc[]
 --
 ====
 

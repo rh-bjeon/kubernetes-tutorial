@@ -1,18 +1,24 @@
 = Pod, ReplicaSet, Deployment
 
+쿠버네티스에서 애플리케이션을 실행하는 방법에는 여러 단계가 있습니다. 이번 장에서는 그중 가장 기본이 되는 세 가지 객체 Pod, ReplicaSet, Deployment를 순서대로 직접 만들어 보면서, 각 객체가 이전 단계의 어떤 한계를 보완하기 위해 존재하는지 확인합니다:
+
+* __Pod__는 컨테이너를 실제로 실행하는 가장 작은 단위입니다. 하지만 Pod를 혼자(맨몸으로) 배포하면, 그 Pod가 죽었을 때 아무도 다시 살려주지 않습니다.
+* __ReplicaSet__은 "이 Pod가 항상 N개 떠 있어야 한다"를 보장해서, Pod가 죽으면 자동으로 새 Pod를 만들어 채워 넣습니다.
+* __Deployment__는 ReplicaSet을 감싸서, 이미지 업데이트나 롤백 같은 __변경 관리__ 기능까지 더해 줍니다.
+
 먼저 작업할 네임스페이스를 생성합니다:
 
 [#create-namespace]
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
 ----
-kubectl create namespace myspace
-kubectl config set-context --current --namespace=myspace
+kubectl create namespace {user}-myspace
+kubectl config set-context --current --namespace={user}-myspace
 ----
 
 == Pod
 
-https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replicasets-deployments-and-jobs[네이키드 Pod]를 생성합니다:
+먼저 아무런 보호 장치 없이 Pod 하나만 직접 만들어 봅니다. 이렇게 상위 컨트롤러(ReplicaSet이나 Deployment) 없이 만든 Pod를 https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replicasets-deployments-and-jobs[네이키드(naked) Pod]라고 부릅니다. 이 실습의 목적은, 이런 Pod가 왜 실무에서 그대로 쓰이지 않는지를 직접 겪어 보는 것입니다:
 
 [#create-pod]
 [.console-input]
@@ -109,11 +115,11 @@ quarkus-demo   0/1     Terminating   0          9m35s
 No resources found in myspace namespace.
 ----
 
-네이키드 Pod는 영원히 사라집니다.
+네이키드 Pod는 영원히 사라집니다. 아무도 이 Pod를 다시 만들어 주지 않기 때문입니다. 애플리케이션이 크래시하거나 노드에 장애가 생겼을 때도 마찬가지로 아무 일도 일어나지 않습니다 — 이것이 바로 Pod를 그대로 배포하지 않는 이유입니다.
 
 == ReplicaSet
 
-ReplicaSet을 생성합니다:
+이번에는 같은 Pod를 ReplicaSet으로 감싸서 만들어 봅니다. ReplicaSet의 ``spec.replicas``에 원하는 개수를, ``spec.template``에 각 Pod의 모양(방금 만들었던 Pod의 정의와 거의 같습니다)을 정의하면, ReplicaSet 컨트롤러가 그 개수를 계속 유지해 줍니다:
 
 [#create-replicaset]
 [.console-input]
@@ -173,7 +179,7 @@ NAME              DESIRED   CURRENT   READY   AGE
 rs-quarkus-demo   3         3         3       79s
 ----
 
-RS를 describe합니다:
+RS를 describe해서, 맨 아래 Events 섹션에 ``replicaset-controller``가 방금 Pod 3개를 만든 기록이 남아 있는지 확인해 봅시다:
 
 [#describe-rs-quarkus-demo]
 [.console-input]
@@ -212,7 +218,7 @@ Events:
   Normal  SuccessfulCreate  89s   replicaset-controller  Created pod: rs-quarkus-demo-mlnng
 ----
 
-Pod는 ReplicaSet에 "소유"됩니다:
+Pod는 ReplicaSet에 "소유"됩니다. Pod 객체 안의 `ownerReferences` 필드를 확인해 보면, 이 Pod를 누가 만들고 책임지는지 알 수 있습니다. 이 소유 관계 덕분에, 잠시 후 Pod를 하나 지웠을 때 ReplicaSet이 그것을 알아채고 새 Pod로 채워 넣을 수 있는 것입니다:
 
 [#rs-owned-ref]
 [.console-input]
@@ -234,7 +240,7 @@ kubectl get pod rs-quarkus-demo-mlnng -o jsonpath='{.metadata.ownerReferences[]}
 }
 ----
 
-이제 pod를 지켜보면서 pod 하나를 삭제합니다:
+이제 앞서 네이키드 Pod로 겪었던 것과 똑같은 상황, 즉 Pod가 갑자기 사라지는 상황을 재현해서 ReplicaSet이 이번에는 어떻게 다르게 반응하는지 지켜봅시다. Pod 목록을 지켜보면서 그중 하나를 삭제합니다:
 
 [#delete-pod-rs]
 [.console-input]
@@ -243,7 +249,7 @@ kubectl get pod rs-quarkus-demo-mlnng -o jsonpath='{.metadata.ownerReferences[]}
 kubectl delete pod rs-quarkus-demo-mlnng
 ----
 
-그러면 이를 대체할 새 pod가 생겨납니다:
+그러면 이를 대체할 새 pod가 생겨납니다. 이것이 바로 네이키드 Pod에는 없었던 __자가 치유(self-healing)__ 능력입니다:
 
 [.console-output]
 [source,bash]
@@ -264,6 +270,8 @@ kubectl delete rs rs-quarkus-demo
 ----
 
 == Deployment
+
+ReplicaSet은 "개수 유지"는 잘하지만, 정작 "이미지를 v1에서 v2로 바꾸고 싶을 때 어떻게 무중단으로 전환할 것인가"와 같은 __변경 관리__는 책임지지 않습니다. 이런 기능을 ReplicaSet 위에 얹어 주는 것이 바로 Deployment입니다. 아래 정의를 보면 ``spec.replicas``와 ``spec.template``이 방금 만들었던 ReplicaSet과 거의 똑같다는 것을 알 수 있는데, 이는 Deployment가 내부적으로 ReplicaSet을 만들고 관리하기 때문입니다(그 증거는 다음 명령의 Pod 이름에 있는 `pod-template-hash` 부분에서 확인할 수 있습니다 — 이것이 Deployment가 만든 ReplicaSet의 흔적입니다):
 
 [#create-deployment]
 [.console-input]

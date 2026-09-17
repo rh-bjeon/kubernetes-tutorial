@@ -20,7 +20,7 @@ include::_attributes.adoc[]
 올바른 네임스페이스에 있는지 확인합니다:
 
 :section-k8s: stateful
-:set-namespace: myspace
+:set-namespace: {user}-myspace
 
 include::partial$namespace-setup-tip.adoc[]
 
@@ -33,18 +33,6 @@ include::partial$set-context.adoc[]
 :section-k8s: stateful
 
 include::partial$watching-pods-with-nodes.adoc[]
-
-=== 멀티 노드 (minikube)
-
-클러스터가 여러 노드에서 실행 중이고, 외부에서 service에 연결할 수 있도록 stateful service를 특정 노드에 할당해야 한다면, ``NODE``를 stateful service를 실행하고 싶지 않은 노드의 이름으로 바꾸세요.
-
-[.console-input]
-[source,bash,subs="+macros,+attributes"]
-----
-NODE=devnation-02 #<.>
-kubectl taint node pass:[${NODE}] app=quarkus-statefulset:NoExecute
-----
-<.> stateful set가 할당되지 않았으면 하는 클러스터의 모든 노드에 대해 이 값을 바꾸거나 반복하세요. xref:taints-affinity.adoc[Taint와 Affinity 섹션, window=_blank]도 참고하세요.
 
 == StatefulSet
 

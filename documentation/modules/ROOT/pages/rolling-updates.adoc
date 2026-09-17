@@ -1,9 +1,11 @@
 = 롤링 업데이트
 
+앞서 xref:kubectl.adoc#set-image-myboot-v1[kubectl] 장에서 이미지를 바꿔서 잠깐 롤링 업데이트를 맛봤습니다. 이번 장에서는 그 과정을 한 단계씩 멈춰서 자세히 들여다봅니다: Deployment의 이미지가 바뀌면 새 리비전의 ReplicaSet이 만들어지고, 기존 ReplicaSet의 복제본 수를 서서히 줄이는 동시에 새 ReplicaSet의 복제본 수를 서서히 늘리면서 전환이 이루어집니다. 이 전략 덕분에 애플리케이션을 완전히 내렸다가 올리지 않고도(즉, 무중단으로) 새 버전으로 넘어갈 수 있습니다.
+
 올바른 네임스페이스에 있는지 확인합니다.
 
 :section-k8s: rolling
-:set-namespace: myspace
+:set-namespace: {user}-myspace
 include::partial$set-context.adoc[]
 
 [TIP,subs="attributes+,+macros"]
@@ -62,9 +64,9 @@ RollingUpdateStrategy:  25% max unavailable, 25% max surge
 .
 ----
 
-`StrategyType` 옵션에는 ``RollingUpdate``와 ``Recreate``가 있습니다:
+`StrategyType` 옵션에는 ``RollingUpdate``와 ``Recreate``가 있습니다(``Recreate``는 기존 Pod를 모두 내린 뒤에 새 Pod를 올리는, 더 단순하지만 다운타임이 있는 전략입니다). ``RollingUpdateStrategy``의 ``max unavailable``은 전환 중 동시에 내려갈 수 있는 Pod의 최대 비율을, ``max surge``는 원래 복제본 수보다 얼마나 더 많은 Pod를 일시적으로 추가할 수 있는지를 뜻합니다.
 
-복제본 수를 변경합니다:
+이제 복제본을 2개로 늘려서, 앞으로 있을 롤링 업데이트에서 Pod가 여러 개일 때 전환 과정을 관찰할 수 있게 준비해 둡시다. 복제본 수를 변경합니다:
 
 include::partial$tip_vscode_kube_editor.adoc[]
 
@@ -120,7 +122,7 @@ myboot-d78fb6d58-2fqml   1/1     Running   0          25s
 myboot-d78fb6d58-ljkjp   1/1     Running   0          3m
 ----
 
-deployment에 연결된 이미지를 변경합니다:
+이제 실제로 롤링 업데이트를 일으켜 봅시다. deployment에 연결된 이미지를 변경합니다:
 
 [#edit-deployment-v2-rolling]
 [.console-input]
@@ -150,6 +152,8 @@ image 속성을 찾습니다:
         imagePullPolicy: IfNotPresent
         name: myboot
 ----
+
+편집기를 저장하고 나면, 새 리비전의 Pod가 뜨는 동안 옛 리비전의 Pod가 아직 남아 있는 __과도기 상태__를 볼 수 있을 것입니다:
 
 [#edit-deployment-v2-get-pod-rolling]
 [.console-input]
@@ -263,9 +267,9 @@ Bonjour from Spring Boot! 502 on myboot-7fbc4b97df-qtkzj
 Aloha from Spring Boot! 0 on myboot-d78fb6d58-vnlch
 ----
 
-[IMPORTANT] 
+[IMPORTANT]
 ====
-minikube에서는 롤오버가 진행되는 동안 curl에서 오류가 발생할 수 있습니다.
+이 Deployment에는 아직 Liveness/Readiness Probe가 정의되어 있지 않으므로, 롤오버가 진행되는 동안 loop 창에서 다음과 같은 연결 오류가 몇 차례 발생할 수 있습니다:
 
 [.console-output]
 [source,bash]
@@ -274,7 +278,7 @@ Aloha from Spring Boot! 119 on myboot-d78fb6d58-2zp4h
 curl: (7) Failed to connect to 192.168.99.100 port 31528: Connection refused
 ----
 
-이는 Live와 Ready Probe가 없기 때문입니다.
+Readiness Probe가 없으면 쿠버네티스는 컨테이너가 `Running` 상태가 되는 즉시 그 Pod를 Service의 Endpoints에 추가합니다. 하지만 Spring Boot 애플리케이션이 실제로 요청을 받을 준비가 되기까지는 그보다 조금 더 시간이 걸리기 때문에, 그 짧은 틈에 들어온 요청은 실패합니다(이 문제는 xref:live-ready.adoc[Liveness와 Readiness] 장에서 Probe를 추가해 직접 해결해 봅니다).
 
 Spring Boot 이미지 대신 Quarkus 이미지를 사용해 보세요.
 

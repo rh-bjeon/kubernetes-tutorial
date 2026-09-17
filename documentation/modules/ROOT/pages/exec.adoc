@@ -149,14 +149,8 @@ Memory: 1324 Cores: 4
 ----
 
 [NOTE]
-==== 
-Minikube를 사용하는 경우, 코어 수는 다음 명령으로 지정한 코어 수입니다.
-
-`minikube --profile devnation config set cpus 4`
-
-그리고 메모리는 다음 명령으로 지정한 메모리의 일부입니다.
-
-`minikube --profile devnation config set memory 6144`
+====
+여기 표시되는 코어 수와 메모리 값은 컨테이너가 실제로 속한 노드 전체의 리소스입니다. 뒤에서 살펴볼 것처럼, 컨테이너에 별도의 리소스 제한을 걸지 않으면 애플리케이션은 이 값을 그대로 보게 됩니다.
 ====
 
 Java 버전을 확인합니다:
